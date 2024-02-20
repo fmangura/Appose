@@ -1,0 +1,285 @@
+h2 {
+    color: blueviolet;
+}
+
+.commentBox.hidden {
+    display: none;
+}
+
+.commentBox {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+a:link {
+    text-decoration: none;
+}
+
+.fa-solid.fa-handshake {
+    color: #0066b2;
+}
+
+a.viewPost:link {
+    text-decoration: inherit;
+    color: inherit;
+    cursor: auto;
+}
+
+a.viewPost:visited {
+    text-decoration: inherit;
+    color: inherit;
+    cursor: auto;
+}
+
+div.card-body {
+    position: relative;
+}
+
+div.link-post {
+    height: 50%;
+    width: 100%;
+}
+
+.hidden {
+    display: none;
+}
+
+.article.card-body {
+    overflow: hidden;
+    height: 10rem;
+}
+
+.article.card-deck {
+    width: 50%;
+    justify-self: center;
+}
+
+.article.card-deck:hover{
+    backdrop-filter: blur(10px);
+}
+
+.article.card-body {
+    font-size: small;
+}
+
+.icons {
+    display: flex;
+    justify-content: end;
+}
+
+.fa-solid.fa-route {
+    color: blueviolet;
+    font-size: x-large;
+}
+
+.fa-solid.fa-route:hover {
+    color: rgb(88, 47, 126);
+}
+
+.article-container {
+    justify-content: center;
+    display: flex;
+}
+
+.card.article-image-container {
+    height: 15rem;
+    overflow: hidden;
+    filter: drop-shadow(0 0 0.50rem gray);
+}
+
+.card-img-overlay {
+    transition: 0.3s;
+}
+.card-img-overlay:hover {
+    backdrop-filter: blur(10px) brightness(50%);
+}
+
+.like-comment-icons {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.joint-like-comment-icons {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.self-like-container {
+    position: relative;
+    justify-items: center;
+    align-items: center;
+    text-align: center;
+    display: flex;
+}
+
+.commentButton {
+    font-size: medium;
+}
+
+.this-post {
+    height: 10rem;
+    overflow: hidden;
+    filter: drop-shadow(0 0 0.50rem gray);
+}
+
+.post-area {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding-top: 10px
+}
+
+.agreement-ranger {
+    display: flex;
+    padding-top: 10px;
+    justify-content: space-evenly;
+    opacity: 0.2;
+    transition: 0.3s;
+}
+
+.agreement-ranger:hover {
+    opacity: 1;
+}
+
+.fa-reply-all {
+    color: blueviolet;
+    font-size: x-large;
+}
+
+.fa-reply-all:hover {
+    color: rgb(88, 47, 126);
+}
+
+.icon-description {
+    font-size: xx-small;
+}
+
+
+.shorten-box {
+    overflow: hidden;
+    height: 15rem;
+}
+
+.card-img-overlay {
+    overflow: hidden;
+}
+
+img.profile-pic {
+    width: 50px;
+}
+
+a.viewUser:link {
+    text-decoration: inherit;
+    color: inherit;
+    cursor: auto;
+}
+
+a.viewUser:visited {
+    text-decoration: inherit;
+    color: inherit;
+    cursor: auto;
+}
+
+.reply-icon {
+    width: 10px;
+}
+
+.post-username {
+    display: flex;
+    align-items:flex-end;
+}
+
+.profile-pic-area {
+    width: 50px;
+    margin-right: 10px;
+}
+
+
+.card-text {
+    margin-top: 10px;
+}
+
+.viewPost {
+    font-size: x-large;
+}
+
+.if-response {
+    color: lightgray;
+}
+
+.reply-post:hover {
+    color: #0066b2;
+}
+
+.reply-post {
+    color: lightgray;
+    margin-right: 10px;
+}
+
+.reply-icon {
+    margin-right:10px;
+}
+
+.mid-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.expand-left-post {
+    font-size: x-large;
+    margin-bottom: 10px;
+}
+
+.expand-right-post {
+    font-size: x-large;
+    text-align: end;
+    margin-top: 10px;
+}
+
+
+.joined-posts {
+    filter: drop-shadow(0 0 0.40rem gray)
+}
+
+.joint-post-area {
+    background-color: #FFF0DB;
+    border-top: 50px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    margin-top: 20px;
+}
+
+.right-argument.col.col-1 {
+    backdrop-filter: blur(10px) brightness(50%);
+    color: white;
+}
+
+
+.left-argument.col.col-1 {
+    backdrop-filter: blur(10px) brightness(50%);
+    color: white;
+}
+
+.moreinfo .info-message {
+    display: none;
+}
+
+.fa-circle-info:hover + .info-message {
+    display: block;
+    height: 10rem;
+    width: 25rem;
+    padding: 10px;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    z-index: 6;
+    background-color: rgb(29, 29, 29);
+    color: white;
+    opacity: 0.9;
+    border-radius: 5px;
+    border: rgb(30, 30, 30);
+    filter: drop-shadow(0 0 0.40rem gray);
+}

@@ -1,0 +1,71 @@
+{% extends 'base.html' %} {% block title %} The Posts Page {% endblock %} {%
+block content %}
+<section>
+  {% if post.linkPreview %}
+    <div class="article-container row">
+        <div class="article card-deck text-white">
+            <div class="card bg-dark text-white">
+                <img
+                class="card-img"
+                src="{{post.linkPreview['image']}}"
+                alt="No Preview"
+            />
+            <div class="card-img-overlay" id="attachment">
+                <h4 class="article card-title">{{post.linkPreview['title']}}</h4>
+                <p class="article card-text">{{post.linkPreview['description']}}</p>
+                <a class="text-white" href="{{post.link}}" target="_blank">Read More...</a>
+            </div>
+            </div>
+        </div>
+    </div>
+  {% endif %}
+  <div class="container">
+        <div class="row">
+            <div class="col-10">
+            <h2>{{post.user.username}}-</h2>
+            </div>
+            <div class="icons col col-1">
+                <a href="/posts/{{post.id}}/more"><i class="morethis fa-solid fa-route" data-id="{{post.id}}" id="more-on-this"></i></a>
+                <small class="icon-description">more on this..</small>
+            </div>
+            <div class="icons col col-1">
+                <a href="/posts/{{post.id}}/response"><i class="reply-post fa-solid fa-reply-all" data-id="{{post.id}}" id="more-on-this"></i></a>
+                <small class="icon-description">Post about this..</small>
+            </div>
+        </div>
+        <div class="row">
+            <h4>{{post.message}}</h4>
+            <small>{{post.timestamp.strftime('%b %d %Y, %I:%M%p')}}</small>
+        </div>
+    </div>
+  <br />
+</section>
+<br>
+<section>
+    <div class="col align-self-center">
+        <form method="POST">
+            {{ form.hidden_tag() }} {% for field in form if field.widget.input_type !=
+            'hidden' %} {{field(placeholder='Make Comment...', class='form-control')}}
+            {% endfor %}
+            <button class="btn btn-primary btn-sm mt-3">Submit</button>
+        </form>
+    </div>
+  <div class="row justify-content-around">
+    <div class="col-lg-10">
+    <h3>Comments ({{post.comments|length}})</h3>
+    <hr>
+      <div class="card-deck">
+        {% for comment in comments %}
+        <div class="card mt-3">
+          <div class="card-body">
+            <div class="card-subtitle">{{comment.user.username}}</div>
+            <div class="card-text">{{comment.text}}</div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  <script src="/static/post.js"></script>
+</section>
+{% endblock %}

@@ -1,0 +1,81 @@
+{% extends 'base.html' %} {% block title %} More Page {% endblock %} 
+
+{% block content %}
+<div class="card container col-lg-10">
+    <div class="card-header">
+        <div class="row">
+            <h2 class="text-muted"><i class="respondingTo fa-solid fa-arrow-up-short-wide"></i> Responding to:</h2>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="row post-user-title">
+            <div class="profile-pic-area col-1">
+                <img
+                class="profile-pic rounded-circle shadow-4-strong"
+                src="{{post.user.profile_pic}}"
+                alt=""
+                />
+            </div>
+            <div class="post-username col">
+                <a class="viewUser" href="/users/profile/{{post.user_id}}"><h5>{{post.user.username}}</h5></a>
+            </div>
+        </div>
+        <div class="row if-response">
+                {% for resp in post.responding_to %}
+                {% if resp.linked_by == 'RESPONDED'%}
+                <div class="col-1 reply-icon">
+                        <a href="/posts/comments/{{resp.post1}}"><i class="reply-post fa-solid fa-reply" data-id="{{resp.id}}" id="more-on-this"></i></a>
+                </div>
+                response to {{resp.responding_to.user.username}}
+                {% endif %}
+                {% endfor %}
+        </div>
+    <p class="card-text">
+      <a href="/posts/comments/{{post.id}}" class="viewPost"
+        >{{post.message}}</a
+      >
+    </p>
+    <h6 class="card-subtitle text-muted font-sm">
+      {{post.timestamp.strftime('%b %d %Y, %I:%M%p')}}
+    </h6>
+                {% if post.linkPreview %}
+                <div class="article">
+                <div class="attachment card mt-2">
+                    <div class="card article-image-container">
+                    <img
+                        class="linkPreview"
+                        src="{{post.linkPreview['image']}}"
+                        alt="No Preview"
+                    />
+                    </div>
+                    <div class="card-img-overlay text-white">
+                    <div class="card-header">
+                        <h4 class="article card-title">
+                        {{post.linkPreview['title']}}
+                        </h4>
+                    </div>
+                    <div class="article card-body">
+                        <p class="article card-text">
+                        {{post.linkPreview['description']}}
+                        </p>
+                        <a class="text-white" href="{{post.link}}" target="_blank"
+                        >Read More...</a
+                        >
+                    </div>
+                    </div>
+                </div>
+                </div>
+                {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+<form method="POST">
+    {{ form.hidden_tag() }}
+    {{form.message(placeholder='Whats on your mind...',
+    class="form-control") }}
+    <button class="btn btn-primary btn-sm mt-3">Post</button>
+</form>
+<script src="/static/post.js"></script>
+{% endblock %}

@@ -1,0 +1,98 @@
+{% extends 'base.html' %} {% block title %} More Page {% endblock %} 
+
+{% block content %}
+<h2>More posts on...</h2>
+<div class="container more-on-container">
+    {% if post.linkPreview %}
+    <div class="card col-md-11">
+        <div class="card-header">
+            <div class="row">
+                <h3 class="text-muted col-2">This link:</h3>
+                <div class="article">
+                    <div class="attachment card">
+                    <div class="card article-image-container">
+                        <img
+                        class="linkPreview"
+                        src="{{post.linkPreview['image']}}"
+                        alt="No Preview"
+                        />
+                    </div>
+                    <div class="card-img-overlay text-white">
+                        <div class="card-header">
+                            <h4 class="article card-title">
+                                {{post.linkPreview['title']}}
+                            </h4>
+                            </div>
+                            <div class="article card-body">
+                            <p class="article card-text">
+                                {{post.linkPreview['description']}}
+                            </p>
+                            <a class="text-white" href="{{post.link}}" target="_blank">Read More...</a>
+                            </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            {% for post in posts_on_link[:10] %}
+                <div class="link-on-post" id="post-{{post.id}}">
+                    <h5>{{post.user.username}}</h5>
+                    <p><a href="/posts/comments/{{post.id}}" class="viewPost"
+                  >{{post.message}}</a></p>
+                    <small>{{post.timestamp.strftime('%b %d %Y, %I:%M%p')}}</small>
+                </div>
+                <hr>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+    <br>
+    <div class="card col-md-11">
+        <div class="card-header">
+            <div class="row">
+                <h3 class="text-muted col-2">This Post:</h3>
+                <div class="this-post card container">
+                    <div class="row">
+                        <div class="col-9">
+                        <h2>{{post.user.username}}-</h2>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <h4>{{post.message}}</h4>
+                        <small>{{post.timestamp.strftime('%b %d %Y, %I:%M%p')}}</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            {% for post in main_post if post.linked_by == 'RESPONDED'%}
+                <div class="link-on-post" id="post-{{post.id}}">
+                    <h5>{{post.responses.user.username}}-</h5>
+                    <p>{{post.responses.message}}</p>
+                    <p>{{post.responses.timestamp.strftime('%b %d %Y, %I:%M%p')}}</p>
+                </div>
+                <hr>
+            {% endfor %}
+        </div>
+    </div>
+    <br>
+    {% if same_topics|length > 0 %}
+    <div class="card col-md-11">
+        <div class="card-header">
+            <h3 class="text-muted">This topic:</h3>
+        </div>
+        <div class="card-body">
+            {% for samepost in same_topics %}
+                <div class="link-on-post" id="post-{{post.id}}">
+                    <h5>{{samepost.user.username}}-</h5>
+                    <p>{{samepost.message}}</p>
+                    <p>{{samepost.timestamp.strftime('%b %d %Y, %I:%M%p')}}</p>
+                </div>
+                <hr>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

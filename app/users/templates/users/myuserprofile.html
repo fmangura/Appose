@@ -1,0 +1,192 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<link rel="stylesheet" href="/static/profile.css">
+<div class="row container justify-content-around">
+    <div class="col col-4">
+        <div class="card container">
+            <div class="row profile">
+                <div class="col col-2">
+                    <img class="profile-pic rounded-circle shadow-4-strong" src="{{user.profile_pic}}" alt="No Image Found">
+                </div>
+                <div class="username col">
+                    <h6>{{user.username}}</h6>
+                    <div class="row">
+                        <a href="/users/{{g.user}}/edit" class="edit-btn">Edit</a>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="user_bio">
+                <h5>Bio:</h5>
+                <div class="card-body">
+                    <p>{{user.bio}}</p>
+                </div>
+            </div>
+            <hr>
+            <div class="row your-stats">
+                <h5>User stats <i class="fa-solid fa-chart-line"></i></h5>
+                <div class="card-body">
+                    <h6>Posts: {{user.posts | length}}</h6>
+                    <h6>Agreed To: {{stat | length}}</h6>
+                    <h6>Interactions Made: {{interactions}}</h6>
+                    <h6>Most recent topics discussed:</h6>
+                    <div class="topic-tags container justify-content-around">
+                        {% if user_posts[0] %}
+                            {% for topic in user_posts[0].topics %}
+                            <a href="/posts/{{user_posts[0].id}}/more" class="topics-tag-btn btn btn-light">{{topic.topic}}</a>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col col-7">
+        <h2>Your Posts:</h2>
+        <div class="container">
+            <div class="card-deck">
+                {% if user_posts.count() > 0 %}
+                {% for post in user_posts %}
+                <div class="row post-area">
+                <div class="col card mt-3 post-containers col-12">
+                    {% if post.linkPreview %}
+                    <div class="article">
+                    <div class="attachment card mt-2">
+                        <div class="card article-image-container">
+                            <img
+                            class="linkPreview"
+                            src="{{post.linkPreview['image']}}"
+                            alt="No Preview"
+                            />
+                        </div>
+                        <div class="card-img-overlay text-white">
+                        <div class="card-header">
+                            <h4 class="article card-title">
+                            {{post.linkPreview['title']}}
+                            </h4>
+                        </div>
+                        <div class="article card-body">
+                            <p class="article card-text">
+                            {{post.linkPreview['description']}}
+                            </p>
+                            <a class="text-white" href="{{post.link}}" target="_blank"
+                            >Read More...</a
+                            >
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+                    {% endif %}
+                    <div class="card-body">
+                        <div class="row post-user-title">
+                            {% for resp in post.response_posts %}
+                            {% if resp.linked_by == 'RESPONDED'%}
+                            <div class="col-1 reply-icon">
+                                    <a href="/posts/comments/{{resp.post1}}"><i class="reply-post fa-solid fa-reply" data-id="{{resp.id}}" id="more-on-this"></i></a>
+                            </div>
+                            {% endif %}
+                            {% endfor %}
+                            <div class="profile-pic-area col-1">
+                                <img
+                                class="profile-pic rounded-circle shadow-4-strong"
+                                src="{{post.user.profile_pic}}"
+                                alt=""
+                                />
+                            </div>
+                            <div class="post-username col">
+                                <a class="viewUser" href="/users/profile/{{post.user_id}}"><h5>{{post.user.username}}</h5></a>
+                            </div>
+                        </div>
+                    <p class="card-text">
+                        <a href="/posts/comments/{{post.id}}" class="viewPost"
+                        >{{post.message}}</a
+                        >
+                    </p>
+                    <h6 class="card-subtitle text-muted font-sm">
+                        {{post.timestamp.strftime('%b %d %Y, %I:%M%p')}}
+                    </h6>
+                    <div class="row like-comment-icons">
+                        {% if post.user_id == g.user %}
+                        <div class="self-like-container col-1">
+                        <i
+                            class="likeButton fa-solid fa-handshake"
+                            id="like-{{post.id}}"
+                            data-id="{{post.id}}"
+                        ></i>
+                        <strong class="like-number"
+                            >{{post.liked_by|length}}</strong
+                        >
+                        </div>
+                        {% else %} {% if post.id not in user.getLikedPosts() %}
+                        <div class="col-1 like-container">
+                        <i
+                            class="likeButton fa-regular fa-handshake"
+                            id="like-{{post.id}}"
+                            data-id="{{post.id}}"
+                        ></i>
+                        </div>
+                        {% else %}
+                        <div class="col-1 like-container">
+                        <i
+                            class="likeButton fa-solid fa-heart"
+                            id="like-{{post.id}}"
+                            data-id="{{post.id}}"
+                        ></i>
+                        </div>
+                        {% endif %} {% endif %}
+                        <div class="col-1">
+                        <i
+                            class="commentButton fa-regular fa-comments"
+                            data-id="{{post.id}}"
+                            id="comment-{{post.id}}"
+                        ></i>
+                        </div>
+                        <div class="col-1">
+                        <i
+                            class="statButton fa-solid fa-chart-line"
+                            data-id="{{post.id}}"
+                            id="statistic-{{post.id}}"
+                        ></i>
+                        </div>
+                        <div class="col-9">
+                            <i
+                                class="deletepost fa-solid fa-trash-can"
+                                data-id="{{post.id}}"
+                                id="delete-{{post.id}}"
+                            ></i>
+                            </div>
+                    </div>
+                    <div class="commentBox hidden" id="commentFor-{{post.id}}">
+                        {% if post.comments %} {% for comment in post.comments[:4] %}
+                        <p>{{comment.text}} <b>{{comment.user.username}}</b></p>
+                        {% endfor %} {% endif %}
+                        <br />
+                        <a href="/posts/comments/{{post.id}}" class="text-muted"
+                        ><h6>Show all...({{post.comments|length}})</h6></a
+                        >
+                    </div>
+                    <div class="post-statistics hidden" id="statisticsFor-{{post.id}}">
+                            {% if post.liked_by %}
+                            <p># of interactions: {{post.sumInteractions()}}</p>
+                            <p>Average amount of users are in {{post.getAvgAgreement()}}% agreement</p>
+                            <p>{{post.getStrAgree()}}% of users strongly agree</p>
+                            <p>{{post.getdisAgree()}}% of users strongly disagree</p>
+                            {% else %}
+                            <p>Not enough data to provide any stats.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                </div>
+                {% endfor %}
+                {% else %}
+                    No Posts Found
+                {% endif %}
+            </div>
+
+        </div>
+    </div>
+</div>
+<script src="/static/profile.js"></script>
+{% endblock %}

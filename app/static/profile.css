@@ -1,0 +1,24 @@
+.topics-tag-btn {
+    font-size: small;
+}
+
+.edit-btn {
+    display: flex;
+
+}
+
+img.profile-pic {
+    width: 50px;
+}
+
+.profile {
+    padding: 5px;
+}
+
+.username {
+    text-align: left;
+}
+
+.dlt-btn {
+    color: red;
+}

@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<link rel="stylesheet" href="/static/profile.css">
+<div class="row container justify-content-around">
+    <div class="col col-4">
+        <div class="card container">
+            <div class="row profile">
+                <div class="col col-2">
+                    <img class="profile-pic rounded-circle shadow-4-strong" src="{{user.profile_pic}}" alt="No Image Found">
+                </div>
+                <div class="col">
+                    <h6>{{user.username}}</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col col-7">
+        <div class="card container">
+            <div class="delete-profile-form card-body">
+                <h6>**Please enter password to confirm delete.</h6>
+                <form action="/users/{{user.id}}/DELETE" method="POST">
+                    {{ delform.hidden_tag() }}
+                    Password
+                    {{delform.password(class='form-control', autocomplete='off')}}
+                    {% for error in delform.password.errors %}
+                        <span class="text-danger">{{ error }}</span>
+                    {% endfor %}
+                    <br>
+                    Confirm Password
+                    {{delform.confirm(class='form-control', autocomplete='off')}}
+                    {% for error in delform.confirm.errors %}
+                        <span class="text-danger">{{ error }}</span>
+                    {% endfor %}
+                    <br>
+                    <button class="btn btn-danger">Confirm</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/static/profile.js"></script>
+{% endblock %}
