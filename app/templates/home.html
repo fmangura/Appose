@@ -21,7 +21,7 @@
       <div class="col-lg-12">
         <div class="col card-deck">
             {% for post in posts %}
-            {% if post.relevance == True and post.responses.count() > 0 and post.sentiment == 'POSITIVE' %}
+            {% if post.relevance == True and post.responses.count() > 0 %}
             <div class="row joint-post-area">
                 <div class="moreinfo">
                     <i class="fa-solid fa-circle-info"></i>
@@ -37,7 +37,7 @@
                         <div class="left-argument col" id="left-post-{{post.id}}">
                             <div class="card-body">
                                 <div class="row post-user-title">
-                                    {% for resp in post.responses %}
+                                    {% for resp in post.responding_to %}
                                     {% if resp.linked_by == 'RESPONDED'%}
                                     <div class="col-1 reply-icon">
                                             <a href="/posts/comments/{{resp.post1}}"><i class="reply-post fa-solid fa-reply" data-id="{{resp.id}}" id="more-on-this"></i></a>
@@ -134,7 +134,7 @@
                         {% for resp in post.responding_to[:1] %}
                             <div class="right-argument col" id="right-post-{{post.id}}">
                                 <div class="card-body">
-                                    {% if resp.responding_to.sentiment != 'POSITIVE' %}
+                                    {% if resp.responding_to.sentiment != post.sentiment %}
                                         <div class="row post-user-title">
                                             {% for resp in post.response_posts %}
                                             {% if resp.linked_by == 'RESPONDED'%}

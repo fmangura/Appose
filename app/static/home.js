@@ -78,6 +78,7 @@ $(document).on('click', '.expand-right-post', function(){
     $('#left-post-'+id).toggleClass('hidden');
     $('.expand-right-post').toggleClass('fa-caret-left fa-xmark');
     $('#right-stat-bar'+id).toggleClass('hidden');
+    $('.expand-left-post').toggleClass('hidden');
     if ($('#right-post-'+id).hasClass('col-1')) {
         $('#right-post-'+id).toggleClass('col-1');
         $('#right-post-'+id).toggleClass('hidden');
@@ -91,6 +92,7 @@ $(document).on('click', '.expand-left-post', function(){
     $('#right-post-'+id).toggleClass('hidden');
     $('.expand-left-post').toggleClass('fa-caret-right fa-xmark');
     $('#left-stat-bar'+id).toggleClass('hidden');
+    $('.expand-right-post').toggleClass('hidden');
         if ($('#left-post-'+id).hasClass('col-1')) {
             $('#left-post-'+id).toggleClass('col-1');
             $('#left-post-'+id).toggleClass('hidden');

@@ -136,6 +136,7 @@ class Connected_Posts(db.Model):
 @classmethod
 def makeConnection(cls, post1, post2):
     connect = Connected_Posts(post1=post1, post2=post2, linked_by='RELEVANCE')
+    connect = Connected_Posts(post1=post2, post2=post1, linked_by='RELEVANCE')
     db.session.add(connect)
     db.session.commit()
     
@@ -210,16 +211,16 @@ class Post(db.Model):
 
     comments = db.relationship('Comment', backref='post', cascade='all, delete-orphan')
 
-    """Looks in Connected_Posts.post1 column for this id. 
-        Think: SELECT * FROM Connected_Posts WHERE post1 = post.id """
+    """"Returns responses to this" Looks in Connected_Posts.post1 column for this id. 
+        Think: SELECT * FROM Connected_Posts WHERE post1 = post.id THEREFORE getting access to post2 column (this post's 'responses')"""
     responses = db.relationship("Connected_Posts",
         foreign_keys=[Connected_Posts.post1],
         backref=db.backref('responding_to', lazy='joined'),
         lazy='dynamic',
         cascade='all, delete-orphan')
     
-    """Looks in Connected_Posts.post2 column for this id. 
-        Think: SELECT * FROM Connected_Posts WHERE post2 = post.id """
+    """ "Returns post this post is responding to" Looks in Connected_Posts.post2 column for this id. 
+        Think: SELECT * FROM Connected_Posts WHERE post2 = post.id THEREFORE getting access to post1 column (the posts this post is 'responding_to')"""
     responding_to = db.relationship("Connected_Posts",
         foreign_keys=[Connected_Posts.post2],
         backref=db.backref('responses', lazy='joined'),
@@ -407,7 +408,9 @@ class Post(db.Model):
 
                 if len(compare) >= 1:
                     connect = Connected_Posts(post1=post.id, post2=post2.id, linked_by='TOPICS')
+                    connect_to = Connected_Posts(post1=post2.id, post2=post.id, linked_by='TOPICS')
                     db.session.add(connect)
+                    db.session.add(connect_to)
                     db.session.commit()
                 else:
                     continue

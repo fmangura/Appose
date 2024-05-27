@@ -96,8 +96,10 @@ def postAboutPost(post_id):
             db.session.commit()
 
             connect = Connected_Posts(post1=post.id, post2=response.id, linked_by='RESPONDED')
+            connect_to = Connected_Posts(post1=response.id, post2=post.id, linked_by='RESPONDED')
 
             db.session.add(connect)
+            db.session.add(connect_to)
             db.session.commit()
 
             return redirect(f'/posts/comments/{post.id}')
