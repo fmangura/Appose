@@ -1,5 +1,9 @@
 from datetime import datetime
+<<<<<<< HEAD
 from flask import flash, session
+=======
+from flask import flash, session, current_app
+>>>>>>> e7e0204 (Added Testing)
 from flask_bcrypt import Bcrypt
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import event
@@ -7,6 +11,10 @@ from statistics import mean
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import sessionmaker
+<<<<<<< HEAD
+=======
+import os
+>>>>>>> e7e0204 (Added Testing)
 import requests
 import random
 
@@ -52,6 +60,10 @@ class Follows(db.Model):
 #############
 
 class Likes(db.Model):
+<<<<<<< HEAD
+=======
+    """ Handles agreement range for per post  AND per user"""
+>>>>>>> e7e0204 (Added Testing)
 
     __tablename__ = 'likes'
 
@@ -129,7 +141,11 @@ class Connected_Posts(db.Model):
         db.Text,
     )
 
+<<<<<<< HEAD
     comments = db.relationship('CommentForCP', backref='post', cascade='all, delete-orphan')
+=======
+    # comments = db.relationship('CommentForCP', backref='post', cascade='all, delete-orphan')
+>>>>>>> e7e0204 (Added Testing)
 
 @classmethod
 def makeConnection(cls, post1, post2):
@@ -266,6 +282,11 @@ class Post(db.Model):
             firstlinkpreview = Post.query.filter_by(link=self.link).first()
             self.linkPreview = firstlinkpreview.linkPreview
             db.session.commit()
+<<<<<<< HEAD
+=======
+            return
+        
+>>>>>>> e7e0204 (Added Testing)
         res = requests.post('https://api.linkpreview.net',
                             headers={
                                 'X-Linkpreview-Api-Key': 'af4da178126dd4142d9758ef6a13d829'},
@@ -282,7 +303,25 @@ class Post(db.Model):
 
     def getSentimentData(self):
         """Use API to get sentiment of the message"""
+<<<<<<< HEAD
         try:
+=======
+
+        try:
+            # DURING TESTING RETURN TEST DATA. MAKES NO API CALLS
+            if str(db) == '<SQLAlchemy postgresql:///Cap1_test>':
+                res = {
+                    'status': {
+                        'test': True,
+                        'code': 404,
+                        'msg': 'TEST DATA; API CALL VERY LIMITED'
+                    }
+                }
+                self.sentiment_data = res
+                db.session.commit()
+                return
+            
+>>>>>>> e7e0204 (Added Testing)
             res = requests.post(f'{MEANINGCLOUD_BASE}sentiment-2.1',
                                 params={
                                     'key': MEANINGCLOUD_KEY,
@@ -375,6 +414,7 @@ class Post(db.Model):
     @classmethod
     def findSameTopicPosts(cls, post):
         """Searchings for topics when posts are relevant to create Connected_Posts Model. Unlike its counterpart, this does not affect templates."""
+<<<<<<< HEAD
         print(f'{post}<<<<This is the post being checked on')
         post1Topics = post.allTopics()
         print(f'{post1Topics}<<<< These are its topics')
@@ -388,6 +428,15 @@ class Post(db.Model):
 
             if checklinks:
                 print(f'{post} and {post2} are already linked')
+=======
+        post1Topics = post.allTopics()
+        allposts = Post.query.filter(Post.relevance==True, Post.user_id!=post.user_id).all()
+
+        for post2 in allposts:
+            checklinks = Connected_Posts.query.filter(Connected_Posts.post1==post.id, Connected_Posts.post2==post2.id).all()
+
+            if checklinks:
+>>>>>>> e7e0204 (Added Testing)
                 continue
 
             else:
@@ -397,7 +446,10 @@ class Post(db.Model):
                     connect = Connected_Posts(post1=post.id, post2=post2.id, linked_by='TOPICS')
                     db.session.add(connect)
                     db.session.commit()
+<<<<<<< HEAD
                     print('connection made')
+=======
+>>>>>>> e7e0204 (Added Testing)
                 else:
                     continue
 
@@ -405,20 +457,30 @@ class Post(db.Model):
     def lookForSameTopicPosts(cls, post):
         """For rendering non-relevant same topics in the /more route"""
         post1Topics = post.allTopics()
+<<<<<<< HEAD
         print(f'{post1Topics}<<<<< LOOKING FOR THESE TOPICS')
+=======
+>>>>>>> e7e0204 (Added Testing)
         allposts = Post.query.filter(Post.id != post.id).all()
         sameTopics = [];
 
         for post2 in allposts:
+<<<<<<< HEAD
             print(f'{post2.allTopics()}<<<<< TOPICS FOUND')
             compare = set(post1Topics).intersection(set(post2.allTopics()))
             print(compare)
+=======
+            compare = set(post1Topics).intersection(set(post2.allTopics()))
+>>>>>>> e7e0204 (Added Testing)
             if len(compare) >= 1:
                 sameTopics.append(post2);
             else:
                 continue
         
+<<<<<<< HEAD
         print(sameTopics)
+=======
+>>>>>>> e7e0204 (Added Testing)
         return sameTopics;
 
 
@@ -496,7 +558,11 @@ class User(db.Model):
         default=False,
     )
 
+<<<<<<< HEAD
     userpost = db.relationship('Post', cascade='all, delete')
+=======
+    userpost = db.relationship('Post', cascade='all, delete', overlaps='posts,user')
+>>>>>>> e7e0204 (Added Testing)
 
     likedPosts = db.relationship('Post', secondary='likes', cascade='all, delete', backref='liked_by')
 
@@ -530,7 +596,11 @@ class User(db.Model):
     def getLikedPosts(self):
         return [post.id for post in self.likedPosts]
 
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> e7e0204 (Added Testing)
     @classmethod
     def signup(cls, username, email, password):
         """ Sign up user using Hasing password """
@@ -563,7 +633,11 @@ class User(db.Model):
     @classmethod
     def startfollow(cls, curr_userID, to_followID):
         """Current user follows other user. """
+<<<<<<< HEAD
         follow = Follows(user_followed=to_followID, user_following=curr_userID)
+=======
+        follow = Follows(user_followed_id=to_followID, user_following_id=curr_userID)
+>>>>>>> e7e0204 (Added Testing)
         db.session.add(follow)
         db.session.commit()
 
@@ -590,10 +664,14 @@ class Topics(db.Model):
         unique=True,
     )
 
+<<<<<<< HEAD
 
 
     
 
+=======
+    
+>>>>>>> e7e0204 (Added Testing)
 ############# 
     
 # Comments Model
@@ -625,6 +703,7 @@ class Comment(db.Model):
         db.ForeignKey('users.id', ondelete='CASCADE')
     )
 
+<<<<<<< HEAD
 class CommentForCP(db.Model):
 
     __tablename__ = 'commentsforcp'
@@ -651,6 +730,8 @@ class CommentForCP(db.Model):
     )
     
 
+=======
+>>>>>>> e7e0204 (Added Testing)
 def connect_db(app):
     """Connect this database to provided Flask app.
 

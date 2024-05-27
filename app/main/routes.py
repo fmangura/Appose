@@ -25,7 +25,11 @@ def homePage():
             post = Post.makePost(
                 user_id=g.user,
                 message=new_post_form.message.data,
+<<<<<<< HEAD
                 link=new_post_form.link.data
+=======
+                link=new_post_form.link.data,
+>>>>>>> e7e0204 (Added Testing)
             )
             return redirect(url_for("main.homePage"))
   

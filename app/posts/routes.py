@@ -43,7 +43,10 @@ def likePost(post_id):
         post = Post.query.get(post_id)
         like = Likes.query.filter_by(post_id=post_id, user_id=g.user).first()
         if not like:
+<<<<<<< HEAD
             print('Making Likes')
+=======
+>>>>>>> e7e0204 (Added Testing)
             doLike = Likes(post_id=post_id, user_id=g.user)
             db.session.add(doLike)
             db.session.commit()
@@ -113,6 +116,10 @@ def deletePost(post_id):
         db.session.commit()
         return ('', 204)
     else:
+<<<<<<< HEAD
         flash('You do not have permission to delete')
+=======
+        flash('You do not have permission to delete', category='danger')
+>>>>>>> e7e0204 (Added Testing)
         return redirect('/')
 

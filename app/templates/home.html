@@ -21,7 +21,11 @@
       <div class="col-lg-12">
         <div class="col card-deck">
             {% for post in posts %}
+<<<<<<< HEAD
             {% if post.relevance == True and post.responses.count() > 0 and post.sentiment != 'NEGATIVE' %}
+=======
+            {% if post.relevance == True and post.responses.count() > 0 and post.sentiment == 'POSITIVE' %}
+>>>>>>> e7e0204 (Added Testing)
             <div class="row joint-post-area">
                 <div class="moreinfo">
                     <i class="fa-solid fa-circle-info"></i>
