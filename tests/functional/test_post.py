@@ -122,7 +122,7 @@ class TestPostBluePrint():
         """
         GIVEN Flask app and incorrect user
         WHEN DELETE '/posts//<int:post_id>/delete'
-        THEN post no longer in home route
+        THEN post still in home route
         """
         not_loggedin_user = test_queries.get('user1')
         # Make test post
