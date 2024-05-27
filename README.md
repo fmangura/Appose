@@ -22,6 +22,21 @@ MEANINGCLOUD API KEY is needed for main function. A key is provided but calls ar
 ```python
 MEANINGCLOUD_KEY = 'key'
 ```
+
+Reminder:
+
+To create virtualenv:
+
+>python3 -m venv venv
+
+Activate venv:
+
+>source venv/bin/activate
+
+Install requirements.txt:
+
+>pip install -r requirements.txt
+
 ### Start App
 > To start app, a SECRET_KEY is needed.
 #### Command line
