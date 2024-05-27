@@ -1,5 +1,6 @@
 import pytest
 import os
+from flask import session
 
 from app import create_app
 from app.models import db, User, Post, Topics, LinkedTopics
