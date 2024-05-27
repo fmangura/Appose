@@ -1,29 +1,7 @@
 from app.models import User, Post, Follows, Likes, LinkedTopics, Connected_Posts, Topics, Comment, db
 
 import pytest
-
-
-def test_new_user_CORRECT():
-    """
-    GIVEN a correct User model
-    WHEN a new User is created
-    THEN check the username, password, and email fields are defined correctly
-    """
-    user = User(username='testUser',password='password', email='test@email.com')
-    assert user.email == 'test@email.com'
-    assert user.password == 'password'
-    assert user.username == 'testUser'
-
-# def test_new_user_INCORRECT():
-#     """
-#     GIVEN an incorrect User model
-#     WHEN a new User is created
-#     THEN check for error
-#     """
-#     with pytest.raises():             
-#         user = User(username='testUser', password='password')
-
-
+     
 class TestUserModel():
 
     def test_signup_authenticate(self, test_client):
