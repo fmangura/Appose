@@ -37,6 +37,14 @@ Install requirements.txt:
 
 >pip install -r requirements.txt
 
+### PostgreSQL Database
+
+Config for database are set to 'postgresql:///Cap1' & 'postgresql:///Cap1_test'
+
+Make sure to createdb Cap1 & Cap1_test or edit the database_uri defaults.
+
+Another option is to set a os.environ('DATABASE_URL').
+
 ### Start App
 > To start app, a SECRET_KEY is needed.
 #### Command line
