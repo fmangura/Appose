@@ -5,13 +5,15 @@ from app.posts import bp
 from app.forms import LoginForm, SignUpForm, CreateComment, CreatePost
 from app.models import db, User, Comment, Post, Likes, Connected_Posts
 
+API_IS_ACTIVE = True
+
 @bp.before_request
 def makeUser_g():
     """Make the current user global"""
     if CURRENT_USER in session:
         g.user = session[CURRENT_USER]
     else:
-        g.user = None
+        g.user = None    
 
 @bp.route('/categories/')
 def categories():

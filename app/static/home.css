@@ -2,6 +2,12 @@ h2 {
     color: blueviolet;
 }
 
+.note-to-user {
+    font-size: 10px;
+    font-style: italic;
+    color: gray;
+}
+
 .commentBox.hidden {
     display: none;
 }

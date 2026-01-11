@@ -5,9 +5,12 @@ import os
 from config import Config
 
 CURRENT_USER = 'curr_user_id'
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 def create_app():
     app = Flask(__name__)
+    app.secret_key = SECRET_KEY
+    app.config["SESSION_PERMANENT"] = False
     config_type = os.getenv('CONFIG_TYPE', default='config.Config')
     app.config.from_object(config_type)
     connect_db(app)
