@@ -19,7 +19,11 @@ def login_success(user):
 def logout():
 
     if CURRENT_USER in session:
+        user = User.query.get_or_404(g.user)
+        db.session.delete(user)
+        db.session.commit()
         del session[CURRENT_USER]
+        return redirect('/users/logout/')
 
 @bp.route('/login/', methods=['GET','POST'])
 def login():
@@ -35,7 +39,7 @@ def login():
             flash(f'Successfully Logged In!', category='success')
             return redirect(url_for("main.homePage"))
         else:
-            flash(f'Failed to Log In!', category='danger')
+            flash(f'Failed to Log In! Another user may be logged in elsewhere.', category='danger')
     
     return render_template('users/login.html', form=form)
 

@@ -1,12 +1,13 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, TextAreaField, DecimalRangeField
-from wtforms.validators import DataRequired, Email, Length, URL, Optional, NumberRange, EqualTo
+from wtforms.validators import DataRequired, Length, URL, Optional, NumberRange, EqualTo, AnyOf
 
 class SignUpForm(FlaskForm):
     """Form for signing up / adding user"""
-    username = StringField('Username', validators=[DataRequired()])
-    email = StringField('E-mail', validators=[DataRequired()])
-    password = PasswordField('Password', validators=[Length(min=6)])
+        
+    username = StringField('Username', validators=[AnyOf('Guest'), DataRequired()])
+    email = StringField('E-mail', validators=[DataRequired(), AnyOf('guest@email.com')])
+    password = PasswordField('Password', validators=[ Length(min=6), AnyOf('guest1234'), DataRequired()])
 
 class LoginForm(FlaskForm):
     """Login form."""

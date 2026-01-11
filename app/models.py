@@ -11,9 +11,9 @@ import os
 import requests
 import random
 
-
-MEANINGCLOUD_BASE = 'https://api.meaningcloud.com/'
-MEANINGCLOUD_KEY = '06beae76af6e887023bdb2edc872888a'
+MEANINGCLOUD_BASE = os.environ.get('MEANINGCLOUD_BASE')
+MEANINGCLOUD_KEY = os.environ.get('MEANINGCLOUD_KEY')
+LINKPREVIEW_KEY = os.environ.get('LINKPREVIEW_KEY')
 
 POS_SENTIMENT = ['P+', 'P']
 NEG_SENTIMENT = ['N+', 'N']
@@ -240,7 +240,6 @@ class Post(db.Model):
         """Use data to get topic of the message"""
         data = self.sentiment_data
         if data["status"]["code"] == '0':
-            print(data["sentimented_entity_list"])
 
             entities = [entity["form"] for entity in data["sentimented_entity_list"]]
 
@@ -265,19 +264,18 @@ class Post(db.Model):
     def getLinkPreview(self):
         """Get link to make link preview accessing an API ONLY IF it has not been linked before"""
         link = Post.query.filter_by(link=self.link).all()
-        if link:
+        if len(link) > 1:
             firstlinkpreview = Post.query.filter_by(link=self.link).first()
             self.linkPreview = firstlinkpreview.linkPreview
             db.session.commit()
             return
-        
-        res = requests.post('https://api.linkpreview.net',
+
+        res = requests.get('https://api.linkpreview.net',
                             headers={
-                                'X-Linkpreview-Api-Key': 'af4da178126dd4142d9758ef6a13d829'},
-                            params={'q': self.link}
+                                'X-Linkpreview-Api-Key': LINKPREVIEW_KEY},
+                            params={'q': self.link},
                         )
-        data = res.json()
-        self.linkPreview = data
+        self.linkPreview = res.json()
         db.session.commit()
 
     def allTopics(self):
@@ -420,31 +418,47 @@ class Post(db.Model):
         """For rendering non-relevant same topics in the /more route"""
         post1Topics = post.allTopics()
         allposts = Post.query.filter(Post.id != post.id).all()
-        sameTopics = [];
+        sameTopics = []
 
         for post2 in allposts:
             compare = set(post1Topics).intersection(set(post2.allTopics()))
             if len(compare) >= 1:
-                sameTopics.append(post2);
+                sameTopics.append(post2)
             else:
                 continue
         
-        return sameTopics;
+        return sameTopics
 
-
+    @classmethod
+    def check_API(cls):
+        try:
+            res = requests.get(MEANINGCLOUD_BASE)
+            if res.status_code == 200:
+                return True
+        except requests.exceptions.ConnectionError as e:
+            flash('Sorry could not provide sentiment analysis due to connection issues. Links, topics, overall sentiment was affected.', category='warning')
+            return False
+    
     @classmethod
     def makePost(cls, user_id, message, link):
         if message:
-            post = Post(user_id=user_id, message=message, link=link)
-            db.session.add(post)
-            db.session.commit()
-            post.getSentimentData()
-            if link:
-                post.getLinkPreview()
-            post.getOverallSentiment()
-            post.getTopic()
+            ## Ping MeanCloud API return post information with NO analysis
+            if Post.check_API() == False:
+                post = Post(user_id=user_id, message=message, link=link)
+                db.session.add(post)
+            else:
+                post = Post(user_id=user_id, message=message, link=link)
+                db.session.add(post)
+                db.session.commit()
+                post.getSentimentData()
+                post.getOverallSentiment()
+                post.getTopic()
 
-            return post
+        if link:
+            post.getLinkPreview()
+        
+        db.session.commit()
+        return post
         
     # @classmethod
     # def compareTopics(cls, compare_to):
@@ -506,6 +520,11 @@ class User(db.Model):
         default=False,
     )
 
+    is_active = db.Column(
+        db.Boolean,
+        default=False,
+    )
+
     userpost = db.relationship('Post', cascade='all, delete', overlaps='posts,user')
 
     likedPosts = db.relationship('Post', secondary='likes', cascade='all, delete', backref='liked_by')
@@ -526,7 +545,7 @@ class User(db.Model):
 
 
     def __repr__(self):
-        return f"User id: {self.id}, username: {self.username}"
+        return f"User id: {self.id}, username: {self.username}, is_Active: {self.is_active}"
     
     def follow(self, user):
         if not self.following(user):
@@ -564,6 +583,7 @@ class User(db.Model):
         user = cls.query.filter_by(username=username).first()
 
         if user:
+            if user.is_active==True: return False
             is_auth = bcrypt.check_password_hash(user.password, password)
             if is_auth:
                 return user

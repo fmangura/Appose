@@ -2,6 +2,7 @@
 
 
 ## Description
+Concept Project. Limited access.
 
 A blog post webapp that analyses a users sentiment towards their discussed topics and allows other users to interact through a poll range of how much they agree with the post. It then provides users with analytics on that post and how the average user feels about that post. Users can also see how might other users interact with other posts.
 
@@ -15,7 +16,7 @@ Posts that have garnered a substantial amount of interactions (poll responses + 
 
 ## Usage
 
-MEANINGCLOUD API KEY is needed for main function. A key is provided but calls are limited.
+MEANINGCLOUD API KEY is needed for main function.
 
 #### app/models.py
 
